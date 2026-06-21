@@ -1,10 +1,10 @@
-// src/screens/LoginScreen.tsx
 import { useState } from 'react';
-import { KeyboardAvoidingView, Platform,StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, FontSize, Fonts, Spacing } from '../../constants/theme';
 import { CatBtn, CatInput, CatrisLogo, ErrorMsg } from '../components/ui/ui';
 import { useAuth } from '../contexts/AuthContext';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { loginMock } from '../services/authService';
 
 type Props = { navigation: any };
 
@@ -13,20 +13,23 @@ export default function LoginScreen({ navigation }: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
       setError('Remplis tous les champs !');
       return;
     }
-
     setError('');
-
-    signIn({
-      id: Date.now().toString(),
-      pseudo: email.split('@')[0],
-      email,
-    });
+    setLoading(true);
+    try {
+      const user = await loginMock(email.trim(), password);
+      await signIn(user);
+    } catch (e: any) {
+      setError(e.message ?? 'Une erreur est survenue.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -40,12 +43,18 @@ export default function LoginScreen({ navigation }: Props) {
         <CatInput placeholder="Email" value={email} onChangeText={t => { setEmail(t); setError(''); }} keyboardType="email-address" autoCapitalize="none" />
         <CatInput placeholder="Mot de passe" value={password} onChangeText={t => { setPassword(t); setError(''); }} secureTextEntry />
 
-        <CatBtn label="JOUER 🐾" variant="pink" onPress={handleLogin} style={s.mb} />
+        {loading ? (
+          <ActivityIndicator color={Colors.pink} style={s.mb} />
+        ) : (
+          <CatBtn label="JOUER 🐾" variant="pink" onPress={handleLogin} style={s.mb} />
+        )}
         <CatBtn label="Créer un compte" variant="purple" onPress={() => navigation.navigate('Register')} />
 
-        <TouchableOpacity onPress={() => { }}>
+        <TouchableOpacity onPress={() => {}}>
           <Text style={s.forgot}>Mot de passe oublié ?</Text>
         </TouchableOpacity>
+
+        <Text style={s.hint}>Astuce test : sano@gmail.com / 123456</Text>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -57,4 +66,5 @@ const s = StyleSheet.create({
   cat: { fontSize: 64, marginBottom: Spacing.xl },
   mb: { marginBottom: Spacing.md },
   forgot: { fontFamily: Fonts.body, color: Colors.muted, fontSize: FontSize.sm, marginTop: Spacing.lg },
+  hint: { fontFamily: Fonts.body, color: Colors.muted, fontSize: FontSize.xs, marginTop: Spacing.md, opacity: 0.6 },
 });

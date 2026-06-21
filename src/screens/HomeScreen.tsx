@@ -1,16 +1,14 @@
-// src/screens/HomeScreen.tsx
-// Menu principal — conforme charte Catris
-import {StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { CatBtn, CatrisLogo } from '../components/ui/ui';
-import { Colors, FontSize, Fonts, Spacing } from '../../constants/theme'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors, FontSize, Spacing } from '../../constants/theme';
+import { CatBtn, CatrisLogo } from '../components/ui/ui';
 
 type Props = { navigation: any };
 
 export default function HomeScreen({ navigation }: Props) {
   return (
     <SafeAreaView style={s.safe}>
-        
+
       <View style={s.moonRow}>
         <Text style={s.moon}>🌙</Text>
       </View>
@@ -20,9 +18,8 @@ export default function HomeScreen({ navigation }: Props) {
       <Text style={s.cat}>🐱</Text>
 
       <View style={s.buttons}>
-        <CatBtn label="JOUER 🐾"       variant="pink"   onPress={() => navigation.navigate('Permissions')} />
-        <CatBtn label="BOUTIQUE ⭐"     variant="amber"  onPress={() => {}} />
-        <CatBtn label="PARAMÈTRES ⚙️"  variant="teal"   onPress={() => {}} />
+        <CatBtn label="JOUER 🐾"       variant="pink" onPress={() => navigation.navigate('Permissions')} />
+        <CatBtn label="PARAMÈTRES ⚙️"  variant="teal" onPress={() => navigation.navigate('Settings')} />
       </View>
 
       <View style={s.footer}>
@@ -32,7 +29,7 @@ export default function HomeScreen({ navigation }: Props) {
         <TouchableOpacity style={s.iconBtn} onPress={() => navigation.navigate('Profile')}>
           <Text style={s.icon}>😺</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={s.iconBtn} onPress={() => {}}>
+        <TouchableOpacity style={s.iconBtn} onPress={() => navigation.navigate('Settings')}>
           <Text style={s.icon}>⚙️</Text>
         </TouchableOpacity>
       </View>

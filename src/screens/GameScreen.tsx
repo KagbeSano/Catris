@@ -1,23 +1,33 @@
 // src/screens/GameScreen.tsx
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
-    Modal,
-    StyleSheet,
-    Text, TouchableOpacity,
-    View,
+  Modal,
+  StyleSheet,
+  Text, TouchableOpacity,
+  View,
 } from 'react-native';
-import { Colors } from '../../constants/color';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors } from '../../constants/color';
+import { usePermissions } from '../hooks/usePermissions';
+import { sendGameStartNotification } from '../services/notificationService';
+import { playSound } from '../services/soundService';
 
 type Props = { navigation: any };
 
 export default function GameScreen({ navigation }: Props) {
+  const { notifStatus, soundStatus } = usePermissions();
   const [score, setScore] = useState(1250);
   const [bestScore] = useState(4560);
   const [combo, setCombo] = useState<number | null>(null);
   const [paused, setPaused] = useState(false);
 
-  // Zone de jeu : le moteur 
+  // Au lancement de l'écran de jeu : notif + son si autorisés
+  useEffect(() => {
+    if (notifStatus === 'granted') sendGameStartNotification();
+    if (soundStatus === 'granted') playSound('gameStart');
+  }, [notifStatus, soundStatus]);
+
+  // Zone de jeu : le moteur
   const GameBoard = () => (
     <View style={styles.board}>
       <Text style={styles.boardPlaceholder}>
@@ -60,13 +70,21 @@ export default function GameScreen({ navigation }: Props) {
       <View style={styles.testRow}>
         <TouchableOpacity
           style={styles.testBtn}
-          onPress={() => { setScore(s => s + 100); setCombo(3); setTimeout(() => setCombo(null), 1500); }}
+          onPress={() => {
+            setScore(s => s + 100);
+            setCombo(3);
+            if (soundStatus === 'granted') playSound('lineClear');
+            setTimeout(() => setCombo(null), 1500);
+          }}
         >
           <Text style={styles.testBtnText}>+100 (test combo)</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.testBtn, { backgroundColor: Colors.error + '33' }]}
-          onPress={() => navigation.navigate('GameOver', { score })}
+          onPress={() => {
+            if (soundStatus === 'granted') playSound('gameOver');
+            navigation.navigate('GameOver', { score });
+          }}
         >
           <Text style={[styles.testBtnText, { color: Colors.error }]}>Game Over</Text>
         </TouchableOpacity>
@@ -102,7 +120,7 @@ export default function GameScreen({ navigation }: Props) {
 
             <TouchableOpacity
               style={[styles.modalBtn, { backgroundColor: Colors.surface }]}
-              onPress={() => { setPaused(false); navigation.navigate('Profile'); }}
+              onPress={() => { setPaused(false); navigation.navigate('Settings'); }}
             >
               <Text style={[styles.modalBtnText, { color: Colors.muted }]}>PARAMÈTRES</Text>
             </TouchableOpacity>
