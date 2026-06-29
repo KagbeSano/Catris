@@ -1,7 +1,8 @@
 // src/screens/GameOverScreen.tsx
 import { useEffect, useRef } from 'react';
-import { Animated, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Animated,StyleSheet, Text, View } from 'react-native';
 import { CatBtn } from '../components/ui/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGameHistory } from '../hooks/useGameHistory';
 import { Colors, Radius, Spacing } from '../../constants/theme';
 
