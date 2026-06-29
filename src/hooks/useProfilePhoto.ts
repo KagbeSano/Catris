@@ -1,4 +1,3 @@
-// src/hooks/useProfilePhoto.ts
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { useEffect, useState } from 'react';
@@ -6,9 +5,6 @@ import { Alert } from 'react-native';
 
 const PHOTO_KEY = 'profilePhoto';
 
-/**
- * Hook personnalisé — gère la photo de profil (persistée dans AsyncStorage).
- */
 export function useProfilePhoto() {
   const [photoUri, setPhotoUri] = useState<string | null>(null);
 

@@ -1,4 +1,3 @@
-// src/hooks/useFonts.ts
 import { FredokaOne_400Regular } from '@expo-google-fonts/fredoka-one';
 import {
   Nunito_400Regular,
@@ -8,11 +7,6 @@ import {
 } from '@expo-google-fonts/nunito';
 import { useFonts as useExpoFonts } from 'expo-font';
 
-/**
- * Hook personnalisé — charge les polices Catris au démarrage.
- * Usage : const { fontsLoaded } = useCatrisFonts();
- * Installer : npx expo install expo-font @expo-google-fonts/fredoka-one @expo-google-fonts/nunito
- */
 export function useCatrisFonts() {
   const [fontsLoaded, error] = useExpoFonts({
     FredokaOne:           FredokaOne_400Regular,

@@ -9,7 +9,7 @@ const SOUND_KEY = '@catris_sound_perm';
 
 export function usePermissions() {
   const [notifStatus, setNotifStatus] = useState<PermStatus>('pending');
-  const [soundStatus, setSoundStatus] = useState<PermStatus>('pending');
+  const [soundStatus, setSoundStatus] = useState<PermStatus>('granted'); // ✅ granted par défaut
 
   useEffect(() => {
     (async () => {
@@ -22,7 +22,6 @@ export function usePermissions() {
     })();
   }, []);
 
-  // Notifications = vraie permission OS
   const setNotif = useCallback(async (enabled: boolean) => {
     if (!enabled) {
       setNotifStatus('denied');

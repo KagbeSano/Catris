@@ -1,10 +1,3 @@
-// src/theme/index.ts
-// ─────────────────────────────────────────────
-// SOURCE DE VÉRITÉ UNIQUE — charte Catris
-// Modifier ici = répercuté partout dans l'app
-// ─────────────────────────────────────────────
-
-// ── Palette ──────────────────────────────────
 export const Colors = {
   background:   '#151B2F',
   surface:      '#1A2440',
@@ -27,10 +20,6 @@ export const ButtonShadows = {
   dark:   '#0D1526',
 } as const;
 
-// ── Typographie ───────────────────────────────
-// Fredoka One  → titres, logos, scores, boutons
-// Nunito       → corps de texte, labels, inputs
-// (charger via expo-font ou @expo-google-fonts)
 export const Fonts = {
   display: 'FredokaOne',   // gros titres & boutons
   body:    'Nunito',       // tout le reste
