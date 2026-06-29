@@ -1,4 +1,3 @@
-// src/screens/GameScreen.tsx
 import { useEffect, useRef, useState } from 'react';
 import {
   Modal,
@@ -47,7 +46,7 @@ export default function GameScreen({ navigation }: Props) {
       if (soundStatus === 'granted') playSound('gameOver');
     }
     if (state.status === 'running') {
-      gameOverSoundPlayedRef.current = false; // reset pour la prochaine partie
+      gameOverSoundPlayedRef.current = false;
     }
   }, [state.status, soundStatus]);
 
@@ -91,7 +90,9 @@ export default function GameScreen({ navigation }: Props) {
 
       {/* Zone de jeu + infos latérales */}
       <View style={styles.gameArea}>
-        <View>
+
+        {/* ← wrapper flex:1 pour que GameBoard occupe toute la hauteur */}
+        <View style={styles.boardWrapper}>
           {state.status === 'gameover' ? (
             <View style={styles.gameOverBox}>
               <Text style={styles.gameOverText}>😿</Text>
@@ -246,10 +247,14 @@ const styles = StyleSheet.create({
   gameArea: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'stretch',
     justifyContent: 'center',
     paddingHorizontal: 12,
     gap: 12,
+  },
+
+  boardWrapper: {
+    flex: 1,
   },
 
   sidebar: { gap: 16, paddingTop: 4 },
@@ -258,6 +263,7 @@ const styles = StyleSheet.create({
   sideValue: { fontSize: 22, fontWeight: '900', color: Colors.white },
 
   gameOverBox: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: Colors.background,
